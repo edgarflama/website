@@ -1,0 +1,52 @@
+name: Deploy main to algoritmia.escom.ipn.mx
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Deploy to huronOS webserver
+    runs-on: ubuntu-latest
+    steps:
+      #- name: 📡 Get latest code
+      #  uses: actions/checkout@v3
+
+      #- name: 🍔 Setup Node
+      #  uses: actions/setup-node@v3
+      #  with:
+      #    node-version: 18
+      #    cache: yarn
+
+      #- name: 🦕 Install Docusaurus
+      #  run: yarn install --frozen-lockfile
+
+      #- name: 🧹 Delete TODO Files
+      #  run: |
+      #    chmod +x ./.github/scripts/quit-todo.sh
+      #    ./.github/scripts/quit-todo.sh
+
+      # - name: Update version
+      #   run: yarn docusaurus docs:version ${{ github.event.head_commit.message }}
+
+      #- uses: stefanzweifel/git-auto-commit-action@v4
+
+      #- name: 🛠️ Build website
+      #  run: yarn build
+
+      - name: 🪁 Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+            server: ${{ secrets.PROD_HOST }}
+            port: ${{ secrets.PROD_HOST_SSH_PORT }}
+            username: ${{ secrets.PROD_SSH_USERNAME }}
+            password: ${{ secrets.PROD_SSH_PASSWORD }}
+      #      local_path: './build/*'
+            local_path: './*'
+            remote_path: ${{ secrets.PROD_DEPLOY_PATH }}
+            delete_remote_files: true
+            sftp_only: false
