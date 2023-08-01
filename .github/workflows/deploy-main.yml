@@ -45,8 +45,7 @@ jobs:
             port: ${{ secrets.PROD_HOST_SSH_PORT }}
             username: ${{ secrets.PROD_SSH_USERNAME }}
             password: ${{ secrets.PROD_SSH_PASSWORD }}
-      #      local_path: './build/*'
-            local_path: './*'
+            local_path: './raw/*'
             remote_path: ${{ secrets.PROD_DEPLOY_PATH }}
             delete_remote_files: true
             sftp_only: false
